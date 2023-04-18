@@ -1,0 +1,12 @@
+#!/bin/bash
+
+N=$1
+
+for ((i=1;i<=N;i++)); do
+  bash calc "$i" &
+done
+
+while true; do
+  [[ $(jobs | grep "Running") == "" ]] && break
+  sleep 0.01
+done

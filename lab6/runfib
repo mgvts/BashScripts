@@ -1,0 +1,10 @@
+#!/bin/bash
+
+N=$1
+
+SALT=200000
+((N=N+SALT))
+for ((i=$SALT; i<$N; i++))
+do
+	bash fib.bash $i
+done

@@ -1,0 +1,35 @@
+#!/bin/bash 
+
+lab="$HOME/lab6"
+log1="$lab/log11.1"
+
+#for ((k=1;k<6;k++))
+#do
+#	log1="$lab/log11.$k"
+#	echo "">"$log1"
+#	for ((i=1; i<21; i++))
+#	do
+#		echo "data for N=$i" >> "$log1"
+#		echo "data for N=$i"
+#		for ((j=0; j<10; j++))
+#		do
+#		(time bash runfib $i) 2>> "$log1"
+#		done
+#	done
+#done
+
+for ((k=1;k<6;k++))
+do
+	log1="$lab/log12.$k"
+	echo "">"$log1"
+	for ((i=1; i<21; i++))
+	do
+		echo "data for N=$i" >> "$log1"
+		echo "data for N=$i"
+		for ((j=0; j<10; j++))
+		do
+		(time bash runfib $i&) 2>> "$log1"
+		done
+	done
+	echo $(( 1+ 1))
+done

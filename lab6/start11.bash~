@@ -1,0 +1,15 @@
+#!/bin/bash
+
+N=$1
+
+for ((i=1;i<=N;i++)); do
+  a=$((1 + $RANDOM % 100000))
+  b=$((1000 + $RANDOM % 100000))
+
+  bash math.bash "$i" "$a" "$b" &
+done
+
+while true; do
+  [[ $(jobs | grep "Running") == "" ]] && break
+  sleep 0.01
+done
