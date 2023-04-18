@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+bash mem.bash&
+echo "mem $!"
+m=$!
+bash mem2.bash&
+echo "mem2 $!"
+mm=$!
+bash track $m&
+bash track $mm&
+

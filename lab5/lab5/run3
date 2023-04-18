@@ -1,0 +1,18 @@
+#!/bin/bash
+
+k=$1
+N=$2
+
+iter=0
+
+while true; do
+	if [[ $iter -eq $k ]]; then
+		echo "all done"
+		exit
+	fi
+
+	bash newmem.bash $N&
+	echo "newmem.bash $! $iter"
+	(( iter += 1 ))
+	sleep 1
+done

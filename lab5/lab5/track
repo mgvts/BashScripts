@@ -1,0 +1,41 @@
+#!/bin/bash
+
+lab="$HOME/lab5"
+
+scriptpid="$1"
+iter=0
+#first top str
+log0="$lab/log0."
+#second top str
+log1="$lab/log1.$scriptpid"
+#
+log2="$lab/log2.$scriptpid"
+log3="$lab/log3.$scriptpid"
+log4="$lab/log4.$scriptpid"
+
+test -f "$log0" && rm "$log0"
+test -f "$log1" && rm "$log1"
+test -f "$log2" && rm "$log2"
+test -f "$log3" && rm "$log3"
+test -f "$log4" && rm "$log4"
+
+while [[ $(top -b -n 1 | grep "$scriptpid") ]]
+do
+	let iter=$iter+1
+	echo "I see $scriptpid in top. iter $iter"
+	
+	top -b -n 1 | head -n 4 | tail -n 1 | awk -F" " '{print $3 " " $5 " " $7 " " $9}' >> "$log1"
+
+	top -b -n 1 | head -n 5 | tail -n 1 | awk -F" " '{print $3 " " $5 " " $7 " " $9}' >> "$log2"
+	
+	top -b -n 1 | grep "$scriptpid" | head -n 1 >> "$log3"
+	
+	top -b -n 1 | head -n 12 | tail -n 5 >> "$log4"
+	
+	sleep 1
+done
+
+echo "Error message" >> "$log0" 
+sudo dmesg | grep "mem.bash" | tail -n 2 >> "$log0"
+echo "The last line in report" >> "$log0" 
+cat "$lab/report.log" | tail -n 1 >> "$log0"
