@@ -1,0 +1,4 @@
+#!/bin/bash
+
+grep -srhwao "[[:alnum:]]\+@[[:alnum:]]\+" /etc |sort | uniq > emails.lst
+

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+res=""
+read impl
+until [[ "$impl" == "q" ]]
+do
+	res+="$impl"
+	read impl
+done
+echo "$res"
+

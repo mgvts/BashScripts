@@ -1,0 +1,4 @@
+#!/bin/bash
+
+grep -rch "" /var/log/*.log | awk '{ s+=$0} END {print s}'
+

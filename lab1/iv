@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ $HOME == $DIRSTACK ]]; then
+	echo "this doesnt home dir"
+	echo 1
+else
+	echo 0
+fi
+

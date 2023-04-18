@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+cat > info.log
+cat X.log | awk '{ if ($2 == "INFO") {print $0} }' >> info.log
+

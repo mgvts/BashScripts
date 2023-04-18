@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "" > marksSorted
+cat marks | awk '{
+	if ($2 >= 90 && $2 <= 100)
+		 $2 = "Great(A)";
+	else if ($2 < 90 && $2 >= 75)
+		$2 = "Good(B)";
+	else if ($2 > 59 && $2 < 75)
+		$2 = "Well(C)";
+	else	$2 = "Bad(E)";
+
+print $0;
+}' >> marksSorted
+
+cat marksSorted

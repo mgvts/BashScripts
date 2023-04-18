@@ -1,0 +1,42 @@
+#!/bin/bash
+
+
+declare -a begindata
+SECONDS=0
+pids=$(ps -ef | awk '{print $2}')
+for pid in $pids
+do
+	if [[ -d "/proc/$pid" ]]; then
+#		value="$(sudo cat /proc/$pid/io | awk '{if ($1 == "rchar:") print $2}')"
+		#begindata[$pid]=$value
+		begindata[$pid]="$(sudo cat /proc/$pid/io | awk '{if ($1 == "rchar:") print $2}')"
+	fi
+done
+
+while [[ true ]]
+do
+	echo "passed $SECONDS"
+	if [[ $SECONDS -ge 10 ]]; then
+		break
+	fi
+done
+
+declare -a enddata
+
+for pid in $(ps -ef | awk '{print $2}')
+do
+	if [[ -d "/proc/$pid" ]]; then
+		#value="$(sudo cat /proc/$pid/io | awk '{if ($1 == "rchar:") print $2}')"
+		#enddata[$pid]=$value
+		enddata[$pid]="$(sudo cat /proc/$pid/io | awk '{if ($1 == "rchar:") print $2}')"
+	fi
+done
+
+echo "PID:CMD:MEM"
+
+for key in ${!begindata[@]}
+do
+	let delta=${enddata[$key]}-${begindata[$key]}
+	result="$(ps h -p $key | awk '{print $5}')"
+	echo "$key:$result:$delta"
+done | sort -t ":" -nk3 | tail -n3

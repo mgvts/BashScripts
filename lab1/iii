@@ -1,0 +1,18 @@
+#!/bin/bash
+
+select lng in nano vi links q
+do
+	case $lng in
+		"nano")
+			nano;;
+		"vi")
+			vi;;
+		"links")
+			links;;
+		"q")
+			break;;
+	*)
+	echo "command doesnt support"
+	esac
+done
+

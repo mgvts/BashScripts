@@ -1,0 +1,30 @@
+#!/bin/bash
+
+max="0"
+
+pids=$(ps -ef | awk '{print $2}')
+
+for pid in $pids
+do
+	if [[ -d /proc/$pid ]]; then
+		sz=$(cat /proc/$pid/status | awk '{if ($1 == "VmRSS:") print $2}')
+		if [[ -n "$sz" && "$sz" -gt "$max" ]]; then
+			ans=$pid
+			max=$sz
+		fi
+	fi
+done
+echo "Process_PID: "$ans" Memory: "$max
+#echo "$(top | head -n7 |tail -1 )"
+topvalue=$(top | head -n20 | tail -13 | sort -rnk6 | head -n1)
+echo "$topvalue"
+memfromtop=$(awk '{print $7}' <<< "$topvalue")
+pidfromtop=$(awk '{print $2}' <<< "$topvalue")
+
+if [ "$pidfromtop" -eq "$ans" -a  "$memfromtop" -eq "$max" ]; then
+	echo "values from code and from top are same"
+else
+	echo "not same from code $ans from top $pidfromtop"
+	diff=$("$max - $memfromtop" | bc -l)
+	echo "max if greater then memfromtop be $diff"
+fi

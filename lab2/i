@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo $( ps h | grep -c '' ) > i.log
+ps -n | awk -F' ' '{print $1 ":" $5 }' >> i.log
