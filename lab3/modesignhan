@@ -1,0 +1,49 @@
+#!/bin/bash
+
+res=1
+echo $$ > .pid
+bot=-1
+user=-1
+counter=0
+u0(){ echo "u0"; user=0; }
+u1(){ user=1; }
+u2(){ user=2; }
+b0(){ echo "b0";bot=0; }
+b1(){ echo "b1";bot=1; }
+b2(){ echo "b2";bot=2; }
+ext(){
+	echo "bye"
+	exit 0
+}
+
+trap u0 1
+trap u1 2
+trap u2 3
+trap b0 4
+trap b1 5
+trap b2 6
+trap 'ext' SIGTERM
+
+while [[ true ]]
+do	
+  	if [[ $bot -eq -1 ]]; then 
+		sleep 1
+	else
+    		echo "Opponent input $bot, your input $user"
+    		if [[ $bot == $user ]]; then
+      			echo "Draw"
+    		elif ([[ $bot == 0 ]] && [[ $user == 1 ]]) ||
+      			([[ $bot == 1 ]] && [[ $user == 2 ]]) ||
+      			([[ $bot == 2 ]] && [[ $user == 0 ]]); then
+      			echo "Lose"
+			pkill -15 modesigngen
+    			ext
+    		else
+			((counter++))
+			echo "Win, current wins $counter"
+   		fi
+		bot=-1
+		user=-1
+	fi
+	
+done

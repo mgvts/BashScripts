@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo $$ > .pid
+counter=0
+draw(){ echo "draw" }
+lose(){ echo "sorry u lose game"; exit 0 }
+win(){ echo "u win now u have $((counter++))" }
+ext(){
+	echo "bye"
+	exit 0
+}
+
+trap draw 1
+trap lose 2
+trap win 3
+trap ext SIGTERM
+
+while true
+do
+  a=1
+done

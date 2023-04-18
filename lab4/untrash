@@ -1,0 +1,59 @@
+#!/bin/bash
+
+fl="$1"
+
+[ $# -eq 0 ] && ( echo "u put 0 args try again"; exit; )
+IFS=$'\n'
+
+for line in $(cat $HOME/trash.log)
+do
+	echo "line $line"
+	path=$(echo "$line" | awk -F: '{ print $1}')
+	link=$(echo "$line" | awk -F: '{ print $2}')
+	if [[ "$path" == *"$fl" ]]; then
+		echo "$path is that ur file? (Y N)"
+		read in
+		if [[ "$in" == "Y" ]]; then
+			#if dir is removed
+			if [[ -d $(dirname $path) ]]; then
+				#if dupicate names
+				if [[ -e $path ]]; then
+					echo "name is already exist enter current name"
+					echo "rename (1) del old file(2) skip(3)"
+					read in
+					if [[ $in == 1 ]]; then
+						while true; do
+							read name
+							if [[ -e $(dirname $path)/$name ]]; then
+								echo "sorry this name are already in use try later"
+							echo "repeat pls"
+							fi
+						done
+					elif [[ $in == 3 ]]
+						echo "bye"
+						exit
+					elif [[ $in == 2 ]]
+						rm $(dirname $path)/$name
+					else
+						echo "u enter bad input, sorry bye"
+						exit
+					fi
+					ln $HOME/.trash/$link $(dirname $path)/$name
+				else
+					ln $HOME/.trash/$link $path
+				fi
+					else
+				echo "dir deleted"
+				ln ~/trash/$link $HOME/$fl
+			fi
+			#after ifs and created old file
+			rm $HOME/.trash/$link
+			#del duplications
+			grep -v $link $HOME/trash.log > $HOME/trashImpl.log
+			mv $HOME/trashImpl.log $HOME/trash.log
+			echo "done"
+			exit 0
+		fi
+	fi
+done 
+echo "no files"

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+bash ~/lab3/4.1&
+pid1=$!
+bash ~/lab3/4.1&
+pid2=$!
+bash ~/lab3/4.1&
+pid3=$1
+
+echo "pid1 $pid1 pid2 $pid2 pid3 $pid3"
+(cpulimit --pid $pid1 --limit 10 &) || (
+kill  $pid1
+kill $pid2
+kill $pid3
+echo "all killed")
+
+read line
+kill $pid3
+echo "killed $pid3"
+read line
+kill $pid2
+echo "killed $pid2"
+read line
+kill $pid1
+echo "killed $pid1"
+

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+res=1
+echo $$ > .pid
+sum(){ res=$(echo "$res + 2" | bc -l ); }
+mul(){ res=$(echo "$res * 2" | bc -l ); }
+ext(){
+	echo "bye"
+	 exit 0
+}
+
+trap 'sum' USR1
+trap 'mul' USR2
+trap 'ext' SIGTERM
+
+while [[ true ]]
+do
+	echo "res = $res"
+	sleep 1
+done

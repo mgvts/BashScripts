@@ -1,0 +1,48 @@
+#!/bin/bash
+
+backupFile=$(ls "/home/mgvvst" | grep ^Backup- | sort | tail -n1 | cut -d "-" -f 2,3,4)
+
+
+dateBackup=$(date +%s -d "$backupFile")
+now=$(date +%s)
+reportFile="/home/mgvvst/backup-report"
+
+currentDate=$(date +%F)
+
+
+if [[ $(($now - $dateBackup)) -ge $((60 * 60 * 24 * 7)) ]]; then
+	echo "create file backup"
+	backupDir="/home/mgvvst/Backup-$currentDate"	
+	source="/home/mgvvst/source"
+	mkdir $backupDir
+	echo "created new backup catalog $backupDir current date is $currentDate" >> $reportFile
+	for fl in $(ls -1 $source -p | grep -v /)
+	do
+		cp "$source/$fl" "$backupDir/$fl"
+		echo "file was copy $fl" >> $reportFile
+	done	
+
+else
+	echo "upload backup catalog $backupFile current date is $currentDate" >> $reportFile
+	for fl in $(ls -1 $source -p | grep -v /)
+	do
+		if [[ -e "$backupFile/$fl" ]]; then
+
+			sizeInBackup=$(ll "$backupFile/$fl" | awk '{ print $5 }')
+			sizeInSource=$(ll "$source/$fl" | awk '{ print $5 }')
+			if [[ $sizeInBackup != $sizeInSource ]];then
+				mv "$backupFile/$fl" "$backupFile/$fl.$currentDate"
+				cp "$source/$fl" "$backupDir/$fl"
+				echo "file $fl has created version $currentDate" >> $reportFile
+				echo "old file was renemed into $fl.$currentDate" >> $reportFile
+				echo "file was added $fl" >> $reportFile
+
+			fi
+
+		else
+			echo "file was copy $fl" >> $reportFile
+		fi
+	done
+
+fi
+

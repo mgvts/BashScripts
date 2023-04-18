@@ -1,0 +1,43 @@
+#!/bin/bash
+
+echo "hello from handl"
+counter=0
+stage=0
+pidgen=$(cat .pidmodegen)
+(tail -f -n1 pipe) |
+while [[ true ]]
+do
+	echo "here"		
+  	read LINE;
+  	if [[ $LINE == "QUIT" ]]; then
+    		echo "Exit"
+    		kill $pidgen
+    		kill $$
+    		exit
+  	elif [[ $LINE != 0 ]] && [[ $LINE != 1 ]] && [[ $LINE != 2 ]]; then
+    		echo "Incorrect input"
+    		kill $pidgen
+    		kill $$
+    		exit
+  	elif [[ $stage == 0 ]]; then
+    		f=$LINE
+    		stage=1
+  	else
+    		echo "Opponent input $f, your input $LINE"
+    		if [[ $f == $LINE ]]; then
+      			echo "Draw"
+    		elif ([[ $f == 0 ]] && [[ $LINE == 1 ]]) ||
+      			([[ $f == 1 ]] && [[ $LINE == 2 ]]) ||
+      			([[ $f == 2 ]] && [[ $LINE == 0 ]]); then
+      			echo "Lose"
+      			kill $pidgen
+    			kill $$
+    			exit
+    		else
+      			((counter++))
+      		echo "Win, current wins $counter"
+    		fi
+    		stage=0
+  	fi
+done
+done

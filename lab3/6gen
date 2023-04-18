@@ -1,0 +1,21 @@
+#!/bin/bash
+
+pd=$(cat .pid)
+
+
+while [[ true ]]
+do
+	read in
+	case $in in
+	"+")
+		kill -USR1 $pd;;
+	"*")
+		kill -USR2 $pd;;
+	*)
+		if [[ "$in" == *"TERM"* ]]; then
+			echo "u enter TERM"
+			kill -SIGTERM $pd
+			break
+		fi
+	esac
+done

@@ -1,0 +1,56 @@
+#!/bin/bash
+
+echo "hello from handl"
+ad randnum
+	
+	echo "user enter $u bot enter $randnum"
+	case $u in
+	"QUIT")
+		echo "bye from handler"
+		kill  $pidgen
+		kill $$;;
+	"0")
+		user=0
+		if [ $randnum -eq 1 ]; then
+			echo "player win"
+			((counter++))			
+			echo "u have $counter wins"
+		elif [ $randnum -eq 0 ]; then
+				echo "draw"		
+		else
+			echo "u lose lets try agail later"
+			kill  $pidgen
+			kill $$
+		fi;;
+	"1")
+		user=1
+		if [ $randnum -eq 2 ]; then
+			echo "player win"
+			((counter++))	
+			echo "u have $counter wins"
+		elif [ $randnum -eq 1 ]; then
+				echo "draw"			
+		else
+			echo "u lose lets try agail later"
+			kill  $pidgen
+			kill $$
+		fi;;
+	"2")
+		user=2
+		if [ $randnum -eq 0 ]; then
+			echo "player win"
+			((counter++))	
+			echo "u have $counter wins"
+		elif [ $randnum -eq 2 ]; then
+				echo "draw"			
+		else
+			echo "u lose lets try agail later"
+			kill  $pidgen
+			kill $$
+		fi;;
+	*)
+		echo "u enter bad input try later"
+		kill  $pidgen
+		kill $$
+	esac
+done

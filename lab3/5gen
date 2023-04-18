@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "$$" > .pid5gen
+while [[ true ]]
+do
+	read in
+	echo "$in" > pipe
+done

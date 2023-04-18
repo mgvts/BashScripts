@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "$$" > .pidmodegen
+while [[ true ]]
+do
+	#randnum=$((1 + $RANDOM % 3))
+	randnum=1
+	read in
+	echo "$in" >> pipe
+	echo "$randnum" >> pipe
+	echo "" > pipe
+done

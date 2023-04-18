@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo "handl started"
+res=0
+mode=""
+pidgen=$(cat .pid5gen)
+(tail -f -n1 pipe) |
+while [[ true ]]
+do
+	read in
+	case "$in" in
+	"QUIT")
+		echo "bye from handler"
+		kill  $pidgen
+		kill $$;;
+	"+")
+		mode="+";;
+	"*")
+		mode="*";;
+	*)
+		if [[ $in =~ ^[0-9]+$ ]]; then
+			if [[ -z "$mode" ]]; then
+				echo "u should choose mode before enter nums"
+			else
+				res=$(echo "$res $mode $in" | bc -l)
+			fi
+		else
+			echo "u enter bad input try later"
+			kill  $pidgen
+			kill $$
+		fi
+		echo "res = $res"
+		echo "mode = $mode"
+	esac
+done

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+pd=$(cat .pid)
+
+
+while [[ true ]]
+do	
+	read in
+	echo "u enter $in"
+	case $in in
+	"0")
+		kill -1 $pd;;
+	"1")
+		kill -2 $pd;;
+	"2")
+		kill -3 $pd;;
+	*)
+		echo "bye"
+		kill -SIGTERM $pd
+		break
+	esac
+	kill -s "$((4 + RANDOM % 3))" $pd
+done

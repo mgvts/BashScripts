@@ -1,0 +1,19 @@
+#!/bin/bash
+
+u=1
+function trapper () {
+
+      echo "In trapper"
+
+      trap 'echo "u=$((u=INT))"; exit' INT
+
+        # Once set, this trap affects the entire script. Anytime
+
+        # ^C is entered, the script will ignore it.
+
+    }
+
+while true; do
+	trapper
+	sleep 20
+done

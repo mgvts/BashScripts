@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#min hour  dayMounth mounth dayWeek(sunday0 monday1) 
+echo "*/5 * * * 0 bash 1" | crontab

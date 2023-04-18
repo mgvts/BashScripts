@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo "handl started"
+res=0
+mode=""
+(tail -f -n1 5in) |
+while [[ true ]]
+do
+	read in
+	case "$in" in
+	"quit")
+		echo "bye from handler"
+		exit 0;;
+	*)
+		if [[ $in =~ ^[0-9]+$ ]]; then
+			if [[ -z "$mode" ]]; then
+				echo "u should choose mode before enter nums"
+			else
+				res=$(echo "$res $mode $in" | bc -l)
+			fi
+		else
+			mode=$in
+		fi
+		echo "res = $res"
+		echo "mode = $mode"
+	esac
+done

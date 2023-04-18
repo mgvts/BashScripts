@@ -1,0 +1,20 @@
+#!/bin/bash
+
+fl="$1"
+added="$(cat added)"
+
+[ $# -eq 0 ] && ( echo "u put 0 args try again"; exit; )
+
+[ -e "/trash" ] || mkdir ~/trash
+
+[ -d $fl ] && ( echo "u should crate file $fl in current dirrecory"; exit 0 )
+
+ln $fl ~/trash/$added
+path="$PWD/$fl"
+
+echo "$path:$added" >> ~/.trash.log
+
+let added=$added+1
+echo "$added" > added
+
+rm "$fl"

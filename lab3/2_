@@ -1,0 +1,6 @@
+#!/bin/bash
+
+at now + 1 minute -f 1
+tail -f -n0 ~/lab3/report
+
+

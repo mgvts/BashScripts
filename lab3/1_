@@ -1,0 +1,11 @@
+#!/bin/bash
+
+d=$(date '+%d.%m.%y_%H:%M:%S')
+
+mkdir ~/lab3/test && {
+echo "catalog test was created successfully" >> ~/lab3/report
+echo "" > ~/lab3/test/"$d"
+}
+#its probably bad same time in mkdir and ping
+ping -c1 -W1 www.net_nikogo.ru || echo "$d cannot ping host" >> ~/lab3/report
+

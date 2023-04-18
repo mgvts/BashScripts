@@ -1,0 +1,24 @@
+#!/bin/bash
+
+pd=$(cat .pid)
+
+
+while [[ true ]]
+do	
+	read user
+	echo "u enter $user"
+	bot=$(( RANDOM % 3))
+	if [[ $bot == $user ]]; then
+      			kill -1 $pd
+    	elif ([[ $bot == 0 ]] && [[ $user == 1 ]]) ||
+      			([[ $bot == 1 ]] && [[ $user == 2 ]]) ||
+      			([[ $bot == 2 ]] && [[ $user == 0 ]]); then
+      		kill -2 $pd
+		pkill -15 modesigngen
+    		ext
+    	else
+			((counter++))
+			kill -3 $pd
+			echo "Win, current wins $counter"
+   	fi
+done
